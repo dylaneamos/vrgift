@@ -37,6 +37,67 @@
         rel="shortcut icon" type="image/x-icon" />
     <link href="https://uploads-ssl.webflow.com/65156c9e9a6e746cf56d8a92/652119242b616c4919b5c6ce_VrGift.png"
         rel="apple-touch-icon" />
+        <script src="https://apis.google.com/js/api:client.js"></script>
+        <script>
+        var googleUser = {};
+        var startApp = function() {
+          gapi.load('auth2', function(){
+            // Retrieve the singleton for the GoogleAuth library and set up the client.
+            auth2 = gapi.auth2.init({
+              client_id: 'YOUR_CLIENT_ID.apps.googleusercontent.com',
+              cookiepolicy: 'single_host_origin',
+              // Request scopes in addition to 'profile' and 'email'
+              //scope: 'additional_scope'
+            });
+            attachSignin(document.getElementById('customBtn'));
+          });
+        };
+      
+        function attachSignin(element) {
+          console.log(element.id);
+          auth2.attachClickHandler(element, {},
+              function(googleUser) {
+                document.getElementById('name').innerText = "Signed in: " +
+                    googleUser.getBasicProfile().getName();
+              }, function(error) {
+                alert(JSON.stringify(error, undefined, 2));
+              });
+        }
+        </script>
+        <style type="text/css">
+          #customBtn {
+            display: inline-block;
+            background: white;
+            color: #444;
+            width: 150px;
+            border-radius: 5px;
+            border: thin solid #888;
+            box-shadow: 1px 1px 1px grey;
+            white-space: nowrap;
+          }
+          #customBtn:hover {
+            cursor: pointer;
+          }
+          span.label {
+            
+            font-weight: normal;
+          }
+          span.icon {
+            background: url('../assets/gicon.png') transparent 5px 50% no-repeat;
+            display: inline-block;
+            vertical-align: middle;
+            width: 10px;
+            height: 10px;
+          }
+          span.buttonText {
+            display: inline-block;
+            vertical-align: middle;
+            padding-left: 10px;
+            padding-right: 10px;
+            font-size: 14px;
+            font-weight: bold;
+          }
+        </style>
 </head>
 <body>
     <div class="w-users-userformpagewrap full-page-wrapper"><a href="../index.html" class="form-page-logo-link w-inline-block">
@@ -46,8 +107,19 @@
             <form data-wf-user-form-type="login" data-wf-user-form-redirect="/resources" method="post">
                 <div class="w-users-userformheader form-card-header">
                     <h2 class="heading h3">Log in</h2>
-                    <p class="paragraph small">Fill in your log in details below.</p>
-                </div><input type="email" maxlength="256" placeholder="Your email" name="Email" id="wf-log-in-email"
+                    <div id="gSignInWrapper">
+                        <span class="label">Sign in with:</span>
+                        <div id="customBtn" class="customGPlusSignIn">
+                          <span class="icon"></span><img src="../assets/gicon.png" height="50" width="50">
+                          <span class="buttonText">Google</span>
+                        </div>
+                      </div>
+                      <div id="name"></div>
+                      <script>startApp();</script>
+                    
+                </div>
+                <p class="paragraph small">Or fill in your log in details below.</p>
+                <input type="email" maxlength="256" placeholder="Your email" name="Email" id="wf-log-in-email"
                     class="text-field w-input" autoComplete="username" required=""
                     data-wf-user-form-input-type="email" /><input type="password" maxlength="256"
                     placeholder="Your password" name="Password" id="wf-log-in-password" class="text-field w-input"
