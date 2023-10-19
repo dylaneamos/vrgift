@@ -1,6 +1,7 @@
 const User = require("../models/users");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
+const jwt = require("jsonwebtoken");
 
 // register
 const createNewUser = async (req, res) => {
@@ -54,7 +55,11 @@ const logInUser = async (req, res) => {
         return res.status(200).json({ message: "wrong credentials" });
       }
       const { password, ...others } = user._doc;
-      res.status(200).json(others);
+      const token = jwt.sign({
+        id: user._id,
+        isAdmin: user.isAdmin,
+      }, process.env.JWT_SECRET);
+      res.status(200).json({...others, token});
     } catch (error) {
       res.status(500).json(error);
     }
