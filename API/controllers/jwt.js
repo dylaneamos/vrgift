@@ -10,7 +10,7 @@ const verifyToken = (req, res, next) => {
             next()
         })
     } else {
-        return res.status(200).json({"message": "you are not authorized"})
+        return res.status(200).json({"message": "unauthorized"})
     }
 }
 

@@ -1,10 +1,10 @@
 const expresss = require('express')
 const router = expresss.Router()
-const {getAllUsers,loginUser,SingleUser,updateUser,deleteUSer,} = require('../controllers/users')
+const {verifyToken} = require('../controllers/jwt')
+const {getAllUsers,SingleUser,updateUser,deleteUSer,} = require('../controllers/users')
 
 
-router.route('/').get(getAllUsers)
-router.route('/login').post(loginUser)
-router.route('/:id').get(SingleUser).patch(updateUser).delete(deleteUSer)
+router.route('/').get(verifyToken, getAllUsers)
+router.route('/:id').get(verifyToken, SingleUser).put(verifyToken, updateUser).delete(deleteUSer)
 
 module.exports = router
