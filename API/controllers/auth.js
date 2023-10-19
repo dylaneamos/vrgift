@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const validator = require("validator");
 const jwt = require("jsonwebtoken");
 
-// register
+// register user
 const createNewUser = async (req, res) => {
   if (!req.body.email === null || !req.body.password || !req.body.fullname) {
     return res.status(200).json({ message: "all the fields are required" });
@@ -39,7 +39,7 @@ const createNewUser = async (req, res) => {
   }
 };
 
-// login
+// login user
 const logInUser = async (req, res) => {
   if (!req.body.email === null || !req.body.password) {
     return res.status(200).json({ message: "all the fields are required" });

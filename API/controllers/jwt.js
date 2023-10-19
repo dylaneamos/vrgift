@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken")
+const User = require('../models/users')
 
 // the name of the cookie value should be 'cookie'
 const verifyToken = (req, res, next) => {
