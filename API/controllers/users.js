@@ -1,17 +1,11 @@
 const User = require('../models/users')
 
 const getAllUsers = async (req, res) => {
-    // const users = await User.
-    res.json({'value':'all users'})
-}
-
-const createNewUser = async (req, res) => {
-    try {
-        const user = await User.create(req.body)
-        res.status(201).json({ user })   
-    } catch (error) {
-        const {message} = error
-        return res.status(403).json({ message })
+    try{
+        const users = await User.find()
+        res.status(200).json({ users })
+    } catch(error){
+        return res.json({'value':'all users'})
     }
 }
 
@@ -34,7 +28,6 @@ const deleteUSer = (req, res) => {
 
 module.exports = {
     getAllUsers,
-    createNewUser,
     loginUser,
     SingleUser,
     updateUser,
