@@ -59,7 +59,7 @@ const logInUser = async (req, res) => {
         id: user._id,
         isAdmin: user.isAdmin,
       }, process.env.JWT_SECRET,
-      { expiresIn: '30m' });
+      { expiresIn: '5m' });
       res.status(200).json({...others, token});
     } catch (error) {
       res.status(500).json(error);
@@ -69,7 +69,24 @@ const logInUser = async (req, res) => {
   }
 };
 
+// callback route to google to redirect to
+const logInUserWithGoogle = async (req, res) => {
+  const { user, token } = req.user;
+  console.log(user, token);
+  res.json({ ...user._doc, token });
+}
+// google success
+const googleSuccess = async (req,res) => {
+  res.json({"message":"done"})
+}
+// google failure
+const googleFailure = async (req, res) => {
+  res.json({"message":"something went wrong"})
+}
 module.exports = {
+  googleFailure,
   createNewUser,
   logInUser,
+  logInUserWithGoogle,
+  googleSuccess,
 };
