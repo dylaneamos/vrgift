@@ -22,7 +22,7 @@ const createQuestion = async (req, res) => {
                 answer_id: req.body.answer_id
             });
             await question.save();
-            res.json(question);
+            res.status(200).json(question);
         } else {
             return res.status(200).json({'message':'unauthorized'})
         }
