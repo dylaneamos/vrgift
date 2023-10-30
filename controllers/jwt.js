@@ -6,7 +6,7 @@ const verifyToken = (req, res, next) => {
     const authCookie = req.headers.token
     if (authCookie) {
         jwt.verify(authCookie, process.env.JWT_SECRET, (error, user)=>{
-            if (error) return res.status(200).json({"message": "token is invalid"})
+            if (error) return res.status(200).json({"message": "invalid token"})
             req.user = user
             next()
         })

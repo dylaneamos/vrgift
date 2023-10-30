@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const app = expresss()
 const users = require('./routes/users')
 const gifts = require('./routes/gifts')
+const questions = require('./routes/questions')
 const auth = require('./routes/auth')
 const connectDB = require('./database/connect')
 require('dotenv').config()
@@ -16,6 +17,7 @@ app.use(morgan('common'))
 app.use('/api/v1/users', users)
 app.use('/api/v1/auth', auth)
 app.use('/api/v1/gifts', gifts)
+app.use('/api/v1/questions', questions)
 
 app.get('/', (req,res)=>{
     res.json({"name": "test"})
