@@ -8,12 +8,14 @@ const questions = require('./routes/questions')
 const auth = require('./routes/auth')
 const connectDB = require('./database/connect')
 require('dotenv').config()
+const cors = require('cors');
 const port = 5000
 
 // middleware
 app.use(expresss.json())
 app.use(helmet())
 app.use(morgan('common'))
+app.use(cors())
 app.use('/api/v1/users', users)
 app.use('/api/v1/auth', auth)
 app.use('/api/v1/gifts', gifts)
