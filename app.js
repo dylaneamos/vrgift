@@ -11,7 +11,7 @@ require('dotenv').config()
 const cors = require('cors');
 const port = 5000
 
-// middleware
+// JS middleware
 app.use(expresss.json())
 app.use(helmet())
 app.use(morgan('common'))
