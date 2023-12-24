@@ -11,6 +11,10 @@ require('dotenv').config()
 const cors = require('cors');
 const port = 5000
 
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
+
+
 // middleware
 app.use(expresss.json())
 app.use(helmet())

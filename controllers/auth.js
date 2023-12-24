@@ -2,6 +2,7 @@ const User = require("../models/users");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
 const jwt = require("jsonwebtoken");
+const passportSetup = require("../config/passport-setup");
 
 // register user
 const createNewUser = async (req, res) => {
@@ -55,12 +56,15 @@ const logInUser = async (req, res) => {
         return res.status(200).json({ message: "wrong credentials" });
       }
       const { password, ...others } = user._doc;
-      const token = jwt.sign({
-        id: user._id,
-        isAdmin: user.isAdmin,
-      }, process.env.JWT_SECRET,
-      { expiresIn: '5m' });
-      res.status(200).json({...others, token});
+      const token = jwt.sign(
+        {
+          id: user._id,
+          isAdmin: user.isAdmin,
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: "5m" }
+      );
+      res.status(200).json({ ...others, token });
     } catch (error) {
       res.status(500).json(error);
     }
@@ -72,17 +76,30 @@ const logInUser = async (req, res) => {
 // callback route to google to redirect to
 const logInUserWithGoogle = async (req, res) => {
   const { user, token } = req.user;
-  console.log(user, token);
-  res.json({ ...user._doc, token });
-}
+  res.cookie("userData", JSON.stringify({ ...user._doc, token }), {
+    httpOnly: true,
+  });
+  return res.redirect("https://kindaki.onrender.com/");
+};
+
 // google success
-const googleSuccess = async (req,res) => {
-  res.json({"message":"done"})
-}
+const googleSuccess = async (req, res) => {
+  if (!req.cookies.userData) {
+    res.status(500).json({ error: 'No user data found' });
+    return;
+  }
+  const userData = JSON.parse(req.cookies.userData);
+  // console.log(userData);
+  res.json({
+    status: "success",
+    data: userData,
+  });
+};
+
 // google failure
 const googleFailure = async (req, res) => {
-  res.json({"message":"something went wrong"})
-}
+  res.json({ message: "something went wrong" });
+};
 module.exports = {
   googleFailure,
   createNewUser,

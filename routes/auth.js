@@ -10,7 +10,8 @@ router.route('/login').post(logInUser)
 router.route('/google').get(passport.authenticate('google',{scope:['profile', 'email'], session: false}))
 router.route('/google/redirect').get(passport.authenticate('google', {
     session: false,
-    failureRedirect: '/google/failure',
+    // successRedirect: '/api/v1/auth/google/success',
+    failureRedirect: '/api/v1/auth/google/failure',
 }), logInUserWithGoogle)
 router.route('/google/success').get(googleSuccess)
 router.route('/google/failure').get(googleFailure)
