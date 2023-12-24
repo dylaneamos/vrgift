@@ -79,6 +79,7 @@ const logInUserWithGoogle = async (req, res) => {
   res.cookie("userData", JSON.stringify({ ...user._doc, token }), {
     httpOnly: true,
   });
+  // redirect to the frontend with cookie
   return res.redirect("https://kindaki.onrender.com/");
 };
 
