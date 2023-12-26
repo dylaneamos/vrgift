@@ -62,7 +62,7 @@ const logInUser = async (req, res) => {
           isAdmin: user.isAdmin,
         },
         process.env.JWT_SECRET,
-        { expiresIn: "5m" }
+        { expiresIn: "30m" }
       );
       res.status(200).json({ ...others, token });
     } catch (error) {
