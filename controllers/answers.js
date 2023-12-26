@@ -1,0 +1,65 @@
+const Answer = require("../models/answers");
+
+const uploadAnswers = async (req, res) => {
+  try {
+    const answerData = req.body;
+    //   console.log(answerData);
+
+    // deletes the user_id from the user provided data
+    if (answerData._id) {
+      delete answerData._id;
+    }
+
+    // add new id
+    answerData._id = req.user.id;
+    // console.log(answerData);
+    // console.log(req.user.id);
+
+    const answer = new Answer(answerData);
+    await answer.save();
+    res.status(200).json(answer);
+  } catch (error) {
+    return res.status(400).json({ message: "an error occurred" });
+  }
+};
+
+const getAllUsersAnswers = async (req, res) => {
+  try {
+    if (req.user.isAdmin) {
+      const answers = await Answer.find();
+      if (answers.length === 0) {
+        return res.json({ message: "nothing to show right now!" });
+      } else {
+        res.status(200).json(answers);
+      }
+    } else {
+      return res.status(200).json({ message: "unauthorized" });
+    }
+  } catch (error) {
+    return res.json({ message: "an error occurred" });
+  }
+};
+
+const getSingleUserAnswer = async (req, res) => {
+  if (req.params.id === req.user.id || req.user.isAdmin === true) {
+    try {
+      const answer = await Answer.findById(req.params.id);
+      if (!answer) {
+        return res.status(200).json({ message: "User not found" });
+      }
+      // console.log(answer);
+      const { _id, ...others } = answer._doc;
+      return res.status(200).json(others);
+    } catch (error) {
+      res.status(200).json({ message: "an error occurred" });
+    }
+  } else {
+    return res.status(200).json({ message: "unauthorized" });
+  }
+};
+
+module.exports = {
+  uploadAnswers,
+  getAllUsersAnswers,
+  getSingleUserAnswer,
+};
