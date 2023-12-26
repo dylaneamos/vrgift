@@ -51,6 +51,7 @@ const getSingleUserAnswer = async (req, res) => {
       const { _id, ...others } = answer._doc;
       return res.status(200).json(others);
     } catch (error) {
+      // console.log("object");
       res.status(200).json({ message: "an error occurred" });
     }
   } else {
