@@ -46,7 +46,6 @@ const getAllUsersAnswers = async (req, res) => {
 };
 
 const getSingleUserAnswer = async (req, res) => {
-  console.log(req.user.id);
   try {
     const answer = await Answer.findById(req.params.id);
     if (!answer) {
