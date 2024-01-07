@@ -5,6 +5,6 @@ const {uploadAnswers, getAllUsersAnswers, getSingleUserAnswer} = require('../con
 
 
 router.route('/').post(verifyToken, uploadAnswers).get(verifyToken, getAllUsersAnswers)
-router.route('/:id').get(verifyToken, getSingleUserAnswer)
+router.route('/:id').get(getSingleUserAnswer)
 
 module.exports = router

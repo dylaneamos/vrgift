@@ -41,7 +41,6 @@ const getAllUsersAnswers = async (req, res) => {
 };
 
 const getSingleUserAnswer = async (req, res) => {
-  if (req.params.id === req.user.id || req.user.isAdmin === true) {
     try {
       const answer = await Answer.findById(req.params.id);
       if (!answer) {
@@ -54,9 +53,6 @@ const getSingleUserAnswer = async (req, res) => {
       // console.log("object");
       res.status(200).json({ message: "an error occurred" });
     }
-  } else {
-    return res.status(200).json({ message: "unauthorized" });
-  }
 };
 
 module.exports = {
