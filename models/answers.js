@@ -13,11 +13,15 @@ const AnswerSchema = new Schema({
 });
 
 const UserSchema = new Schema({
- _id: {
-    type: String,
-    required: true,
-},
- userAnswers: [AnswerSchema]
+    _id: {
+        type: String,
+        required: true,
+    },
+    fullname: {
+        type: String, 
+        required: true
+    },
+    userAnswers: [AnswerSchema]
 });
 
 const UserModel = mongoose.model("answer", UserSchema);

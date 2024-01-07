@@ -1,22 +1,27 @@
 const Answer = require("../models/answers");
+const User = require("../models/users");
 
 const uploadAnswers = async (req, res) => {
   try {
     const answerData = req.body;
-    //   console.log(answerData);
+    // console.log(answerData);
 
     // deletes the user_id from the user provided data
     if (answerData._id) {
       delete answerData._id;
     }
-
+    if (answerData.fullname) {
+      delete answerData.fullname;
+    }
     // add new id
     answerData._id = req.user.id;
-    // console.log(answerData);
-    // console.log(req.user.id);
+    const user = await User.findById(req.user.id);
+    answerData.fullname = user.fullname;
+    // console.log(user.fullname);
 
     const answer = new Answer(answerData);
     await answer.save();
+
     res.status(200).json(answer);
   } catch (error) {
     return res.status(400).json({ message: "an error occurred" });
@@ -41,18 +46,19 @@ const getAllUsersAnswers = async (req, res) => {
 };
 
 const getSingleUserAnswer = async (req, res) => {
-    try {
-      const answer = await Answer.findById(req.params.id);
-      if (!answer) {
-        return res.status(200).json({ message: "User not found" });
-      }
-      // console.log(answer);
-      const { _id, ...others } = answer._doc;
-      return res.status(200).json(others);
-    } catch (error) {
-      // console.log("object");
-      res.status(200).json({ message: "an error occurred" });
+  console.log(req.user.id);
+  try {
+    const answer = await Answer.findById(req.params.id);
+    if (!answer) {
+      return res.status(200).json({ message: "User not found" });
     }
+    // console.log(answer);
+    const { _id, ...others } = answer._doc;
+    return res.status(200).json(others);
+  } catch (error) {
+    // console.log("object");
+    res.status(200).json({ message: "an error occurred" });
+  }
 };
 
 module.exports = {
