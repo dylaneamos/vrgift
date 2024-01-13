@@ -33,7 +33,7 @@ const createNewUser = async (req, res) => {
             { expiresIn: "30m" }
           );
           const data = {
-            id: others["_id"],
+            _id: others["_id"],
             fullname: others["fullname"],
             token: token,
           };
@@ -78,7 +78,7 @@ const logInUser = async (req, res) => {
         { expiresIn: "30m" }
       );
       const data = {
-        id: others["_id"],
+        _id: others["_id"],
         fullname: others["fullname"],
         token: token,
       };
