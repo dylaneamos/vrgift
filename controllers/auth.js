@@ -33,11 +33,10 @@ const createNewUser = async (req, res) => {
             { expiresIn: "30m" }
           );
           const data = {
-            id: others['_id'],
-            fullname: others['fullname'],
-            email: others['email'],
-            token: token
-          }
+            id: others["_id"],
+            fullname: others["fullname"],
+            token: token,
+          };
           res.status(201).json(data);
         } catch (error) {
           const { message } = error;
@@ -79,11 +78,10 @@ const logInUser = async (req, res) => {
         { expiresIn: "30m" }
       );
       const data = {
-        id: others['_id'],
-        fullname: others['fullname'],
-        email: others['email'],
-        token: token
-      }
+        id: others["_id"],
+        fullname: others["fullname"],
+        token: token,
+      };
 
       res.status(200).json(data);
     } catch (error) {
@@ -107,7 +105,7 @@ const logInUserWithGoogle = async (req, res) => {
 // google success
 const googleSuccess = async (req, res) => {
   if (!req.cookies.userData) {
-    res.status(500).json({ error: 'No user data found' });
+    res.status(500).json({ error: "No user data found" });
     return;
   }
   const userData = JSON.parse(req.cookies.userData);
