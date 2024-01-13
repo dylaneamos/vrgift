@@ -24,7 +24,21 @@ const createNewUser = async (req, res) => {
         try {
           const user = await newUser.save();
           const { password, ...others } = user._doc;
-          res.status(201).json(others);
+          const token = jwt.sign(
+            {
+              id: user._id,
+              isAdmin: user.isAdmin,
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: "30m" }
+          );
+          const data = {
+            id: others['_id'],
+            fullname: others['fullname'],
+            email: others['email'],
+            token: token
+          }
+          res.status(201).json(data);
         } catch (error) {
           const { message } = error;
           res.status(403).json({ message });
@@ -33,7 +47,7 @@ const createNewUser = async (req, res) => {
         res.status(201).json({ message: "failed to create user" });
       }
     } else {
-      return res.status(200).json({ message: "email already registered" });
+      return res.status(200).json({ message: "user already registered" });
     }
   } else {
     return res.status(200).json({ message: "email not valid" });
@@ -64,7 +78,14 @@ const logInUser = async (req, res) => {
         process.env.JWT_SECRET,
         { expiresIn: "30m" }
       );
-      res.status(200).json({ ...others, token });
+      const data = {
+        id: others['_id'],
+        fullname: others['fullname'],
+        email: others['email'],
+        token: token
+      }
+
+      res.status(200).json(data);
     } catch (error) {
       res.status(500).json(error);
     }

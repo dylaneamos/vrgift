@@ -24,7 +24,7 @@ const uploadAnswers = async (req, res) => {
 
     res.status(200).json(answer);
   } catch (error) {
-    return res.status(400).json({ message: "an error occurred" });
+    return res.status(400).json({ message: "quiz already exist" });
   }
 };
 
@@ -49,7 +49,7 @@ const getSingleUserAnswer = async (req, res) => {
   try {
     const answer = await Answer.findById(req.params.id);
     if (!answer) {
-      return res.status(200).json({ message: "User not found" });
+      return res.status(200).json({});
     }
     // console.log(answer);
     const { _id, ...others } = answer._doc;
